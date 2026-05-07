@@ -1,0 +1,82 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]: 상상우리
+      - link "프로필 등록" [ref=e5] [cursor=pointer]:
+        - /url: /register
+      - link "추천 목록" [ref=e6] [cursor=pointer]:
+        - /url: /recommendations
+      - link "담당자 대시보드" [ref=e7] [cursor=pointer]:
+        - /url: /admin
+  - main [ref=e8]:
+    - generic [ref=e9]:
+      - heading "추천 매칭 목록" [level=1] [ref=e10]
+      - paragraph [ref=e11]: 매칭 점수가 높은 순서로 표시됩니다
+      - generic [ref=e12]:
+        - generic [ref=e13]: 필터
+        - generic [ref=e14]: 지역
+        - generic [ref=e15]: 직종
+        - generic [ref=e16]: 경력
+        - generic [ref=e17]: — 필터 기능 구현 예정 —
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: "시니어 이름 #1"
+            - generic [ref=e22]: "매칭 점수: —"
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - generic [ref=e25]:
+                - text: 희망 직종
+                - paragraph [ref=e26]: —
+              - generic [ref=e27]:
+                - text: 지역
+                - paragraph [ref=e28]: —
+              - generic [ref=e29]:
+                - text: 경력
+                - paragraph [ref=e30]: —
+            - generic [ref=e31]:
+              - paragraph [ref=e32]: 추천 일자리
+              - generic [ref=e34]: —
+            - button "매칭 확정" [disabled]
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]: "시니어 이름 #2"
+            - generic [ref=e38]: "매칭 점수: —"
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - text: 희망 직종
+                - paragraph [ref=e42]: —
+              - generic [ref=e43]:
+                - text: 지역
+                - paragraph [ref=e44]: —
+              - generic [ref=e45]:
+                - text: 경력
+                - paragraph [ref=e46]: —
+            - generic [ref=e47]:
+              - paragraph [ref=e48]: 추천 일자리
+              - generic [ref=e50]: —
+            - button "매칭 확정" [disabled]
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - generic [ref=e53]: "시니어 이름 #3"
+            - generic [ref=e54]: "매칭 점수: —"
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - text: 희망 직종
+                - paragraph [ref=e58]: —
+              - generic [ref=e59]:
+                - text: 지역
+                - paragraph [ref=e60]: —
+              - generic [ref=e61]:
+                - text: 경력
+                - paragraph [ref=e62]: —
+            - generic [ref=e63]:
+              - paragraph [ref=e64]: 추천 일자리
+              - generic [ref=e66]: —
+            - button "매칭 확정" [disabled]
+      - paragraph [ref=e67]: — 매칭 데이터 로딩 기능 구현 예정 —
+  - contentinfo [ref=e68]: © 2026 상상우리
+  - button "Open Next.js Dev Tools" [ref=e74] [cursor=pointer]:
+    - img [ref=e75]
