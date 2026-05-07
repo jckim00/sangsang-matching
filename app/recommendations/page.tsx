@@ -1,64 +1,132 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
+
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
+type MatchCard = {
+  id: string;
+  score: number;
+  status: string;
+  jobs: { title: string; region: string; job_type: string; required_career: number } | null;
+};
+
+function scoreBadge(score: number) {
+  if (score >= 6) return { label: "최적 6점", className: "bg-yellow-100 text-yellow-800 border border-yellow-300" };
+  if (score >= 4) return { label: `적합 ${score}점`, className: "bg-green-100 text-green-800 border border-green-300" };
+  return { label: `부분 ${score}점`, className: "bg-slate-100 text-slate-600 border border-slate-300" };
+}
+
+function RecommendationsContent() {
+  const searchParams = useSearchParams();
+  const seniorId = searchParams.get("senior_id");
+
+  const [matches, setMatches]     = useState<MatchCard[]>([]);
+  const [seniorName, setSeniorName] = useState("");
+  const [loading, setLoading]     = useState(true);
+
+  useEffect(() => {
+    if (!seniorId) { setLoading(false); return; }
+
+    async function fetchData() {
+      const [seniorRes, matchRes] = await Promise.all([
+        supabase.from("seniors").select("name").eq("id", seniorId).single(),
+        supabase
+          .from("matches")
+          .select("id, score, status, jobs(title, region, job_type, required_career)")
+          .eq("senior_id", seniorId)
+          .gt("score", 0)
+          .order("score", { ascending: false }),
+      ]);
+      if (seniorRes.data) setSeniorName(seniorRes.data.name);
+      setMatches((matchRes.data as MatchCard[]) ?? []);
+      setLoading(false);
+    }
+    fetchData();
+  }, [seniorId]);
+
+  if (!seniorId) {
+    return (
+      <div className="max-w-2xl mx-auto text-center py-20">
+        <div className="rounded-xl border-2 border-slate-300 bg-slate-50 px-8 py-12">
+          <p className="text-2xl font-bold text-slate-600 mb-3">시니어 ID가 필요합니다</p>
+          <p className="text-xl text-slate-400">URL 예시: /recommendations?senior_id=xxx</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto">
+      <h1 className="text-4xl font-bold text-slate-900 mb-2">추천 매칭 목록</h1>
+      {seniorName && (
+        <p className="text-xl text-slate-500 mb-8">
+          <span className="font-semibold text-slate-800">{seniorName}</span> 님의 매칭 결과 (점수 높은 순)
+        </p>
+      )}
+
+      {loading && <p className="text-xl text-slate-400 text-center py-16">불러오는 중...</p>}
+
+      {!loading && matches.length === 0 && (
+        <div className="rounded-xl border-2 border-slate-300 bg-slate-50 px-8 py-12 text-center">
+          <p className="text-2xl font-bold text-slate-500 mb-3">현재 매칭되는 일자리가 없습니다</p>
+          <p className="text-xl text-slate-400">일자리 정보가 등록되면 자동으로 매칭됩니다</p>
+        </div>
+      )}
+
+      <div className="flex flex-col gap-4">
+        {matches.map((match) => {
+          const badge = scoreBadge(match.score);
+          const job   = match.jobs;
+          return (
+            <Card key={match.id} className="hover:shadow-md transition-shadow">
+              <CardContent className="pt-6 pb-5">
+                <div className="flex items-start justify-between gap-6">
+                  <div className="flex-1">
+                    <p className="text-2xl font-bold text-slate-900 mb-3">
+                      {job?.title ?? "—"}
+                    </p>
+                    <div className="grid grid-cols-3 gap-3 text-lg text-slate-600">
+                      <div>
+                        <p className="font-medium text-slate-500 text-base mb-1">지역</p>
+                        <p className="font-semibold">{job?.region ?? "—"}</p>
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-500 text-base mb-1">직종</p>
+                        <p className="font-semibold">{job?.job_type ?? "—"}</p>
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-500 text-base mb-1">요구 경력</p>
+                        <p className="font-semibold">{job?.required_career ?? 0}년 이상</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center gap-2 shrink-0">
+                    <span className="text-5xl font-bold text-slate-900">{match.score}</span>
+                    <span className="text-lg text-slate-400">/ 6점</span>
+                    <Badge className={`text-lg px-4 py-1 ${badge.className}`}>
+                      {badge.label}
+                    </Badge>
+                    {match.status === "assigned" && (
+                      <Badge className="text-base bg-blue-100 text-blue-800 border border-blue-300">배정 완료</Badge>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function RecommendationsPage() {
   return (
-    <div>
-      <h1 className="text-4xl font-bold text-slate-900 mb-2">추천 매칭 목록</h1>
-      <p className="text-xl text-slate-500 mb-8">매칭 점수가 높은 순서로 표시됩니다</p>
-
-      {/* 필터/검색 자리 */}
-      <div className="flex items-center gap-4 mb-8 p-4 bg-slate-50 rounded-xl border border-slate-200">
-        <span className="text-xl font-medium text-slate-600">필터</span>
-        <Badge variant="secondary" className="text-lg px-4 py-1">지역</Badge>
-        <Badge variant="secondary" className="text-lg px-4 py-1">직종</Badge>
-        <Badge variant="secondary" className="text-lg px-4 py-1">경력</Badge>
-        <span className="ml-auto text-lg text-slate-400">— 필터 기능 구현 예정 —</span>
-      </div>
-
-      {/* 매칭 카드 목록 자리 */}
-      <div className="flex flex-col gap-4">
-        {[1, 2, 3].map((i) => (
-          <Card key={i} className="opacity-40">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-2xl text-slate-400">시니어 이름 #{i}</CardTitle>
-              <Badge className="text-xl px-4 py-1 bg-slate-200 text-slate-500">
-                매칭 점수: —
-              </Badge>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4 text-xl text-slate-400">
-                <div>
-                  <span className="font-medium">희망 직종</span>
-                  <p className="mt-1">—</p>
-                </div>
-                <div>
-                  <span className="font-medium">지역</span>
-                  <p className="mt-1">—</p>
-                </div>
-                <div>
-                  <span className="font-medium">경력</span>
-                  <p className="mt-1">—</p>
-                </div>
-              </div>
-              <div className="mt-4 pt-4 border-t">
-                <p className="text-xl text-slate-400 font-medium mb-2">추천 일자리</p>
-                <div className="flex gap-2">
-                  <Badge variant="outline" className="text-lg px-3 py-1 text-slate-400">—</Badge>
-                </div>
-              </div>
-              <Button size="lg" className="mt-4 h-12 text-xl w-full" disabled>
-                매칭 확정
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <p className="mt-8 text-center text-xl text-slate-400">
-        — 매칭 데이터 로딩 기능 구현 예정 —
-      </p>
-    </div>
+    <Suspense fallback={<p className="text-xl text-slate-400 text-center py-16">불러오는 중...</p>}>
+      <RecommendationsContent />
+    </Suspense>
   );
 }
