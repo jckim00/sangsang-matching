@@ -41,7 +41,7 @@ function RecommendationsContent() {
           .order("score", { ascending: false }),
       ]);
       if (seniorRes.data) setSeniorName(seniorRes.data.name);
-      setMatches((matchRes.data as MatchCard[]) ?? []);
+      setMatches((matchRes.data as unknown as MatchCard[]) ?? []);
       setLoading(false);
     }
     fetchData();

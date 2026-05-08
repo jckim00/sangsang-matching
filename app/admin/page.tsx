@@ -4,9 +4,10 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { AlertTriangle, Clock, CheckCircle } from "lucide-react";
 import { supabase, type Job, type Senior } from "@/lib/supabase";
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -176,9 +177,12 @@ export default function AdminPage() {
                           </td>
                           <td className="py-4 pr-4">{statusBadge(s.matchStatus)}</td>
                           <td className="py-4">
-                            <Button asChild variant="outline" size="sm" className="h-12 text-lg px-4">
-                              <Link href={`/recommendations?senior_id=${s.id}`}>추천 일자리 보기</Link>
-                            </Button>
+                            <Link
+                              href={`/recommendations?senior_id=${s.id}`}
+                              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-12 text-lg px-4")}
+                            >
+                              추천 일자리 보기
+                            </Link>
                           </td>
                         </tr>
                       ))}
@@ -211,7 +215,7 @@ export default function AdminPage() {
                     <div className="flex flex-col gap-2">
                       <label className="text-xl font-medium text-slate-800">지역 <span className="text-red-500">*</span></label>
                       {jobErrors.region && <div className="rounded-lg border border-red-400 bg-red-50 px-4 py-2"><p className="text-lg text-red-600">{jobErrors.region}</p></div>}
-                      <Select value={jobForm.region} onValueChange={v => setJobForm({ ...jobForm, region: v })}>
+                      <Select value={jobForm.region} onValueChange={v => setJobForm({ ...jobForm, region: v ?? "" })}>
                         <SelectTrigger className="h-14 text-xl px-4"><SelectValue placeholder="지역 선택" /></SelectTrigger>
                         <SelectContent>{REGIONS.map(r => <SelectItem key={r} value={r} className="text-xl py-3">{r}</SelectItem>)}</SelectContent>
                       </Select>
@@ -219,7 +223,7 @@ export default function AdminPage() {
                     <div className="flex flex-col gap-2">
                       <label className="text-xl font-medium text-slate-800">직종 <span className="text-red-500">*</span></label>
                       {jobErrors.job_type && <div className="rounded-lg border border-red-400 bg-red-50 px-4 py-2"><p className="text-lg text-red-600">{jobErrors.job_type}</p></div>}
-                      <Select value={jobForm.job_type} onValueChange={v => setJobForm({ ...jobForm, job_type: v })}>
+                      <Select value={jobForm.job_type} onValueChange={v => setJobForm({ ...jobForm, job_type: v ?? "" })}>
                         <SelectTrigger className="h-14 text-xl px-4"><SelectValue placeholder="직종 선택" /></SelectTrigger>
                         <SelectContent>{JOBS.map(j => <SelectItem key={j} value={j} className="text-xl py-3">{j}</SelectItem>)}</SelectContent>
                       </Select>

@@ -85,7 +85,7 @@ export default function RegisterPage() {
               <label className="text-xl font-medium text-slate-800">거주 지역 <span className="text-red-500">*</span></label>
               <p className="text-lg text-slate-500">어디에서 일하고 싶으세요?</p>
               {errors.region && <div className="rounded-lg border border-red-400 bg-red-50 px-4 py-2"><p className="text-lg text-red-600">{errors.region}</p></div>}
-              <Select value={form.region} onValueChange={v => setForm({ ...form, region: v })}>
+              <Select value={form.region} onValueChange={v => setForm({ ...form, region: v ?? "" })}>
                 <SelectTrigger className="h-14 text-xl px-4"><SelectValue placeholder="지역을 선택하세요" /></SelectTrigger>
                 <SelectContent>{REGIONS.map(r => <SelectItem key={r} value={r} className="text-xl py-3">{r}</SelectItem>)}</SelectContent>
               </Select>
@@ -95,7 +95,7 @@ export default function RegisterPage() {
               <label className="text-xl font-medium text-slate-800">희망 직종 <span className="text-red-500">*</span></label>
               <p className="text-lg text-slate-500">어떤 일을 하시겠어요?</p>
               {errors.desired_job && <div className="rounded-lg border border-red-400 bg-red-50 px-4 py-2"><p className="text-lg text-red-600">{errors.desired_job}</p></div>}
-              <Select value={form.desired_job} onValueChange={v => setForm({ ...form, desired_job: v })}>
+              <Select value={form.desired_job} onValueChange={v => setForm({ ...form, desired_job: v ?? "" })}>
                 <SelectTrigger className="h-14 text-xl px-4"><SelectValue placeholder="직종을 선택하세요" /></SelectTrigger>
                 <SelectContent>{JOBS.map(j => <SelectItem key={j} value={j} className="text-xl py-3">{j}</SelectItem>)}</SelectContent>
               </Select>

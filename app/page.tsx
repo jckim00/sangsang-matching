@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
@@ -19,9 +20,9 @@ export default function Home() {
             <p className="text-lg text-slate-600">
               이름, 지역, 희망 직종, 경력을 등록하세요
             </p>
-            <Button asChild size="lg" className="text-xl h-14 w-full">
-              <Link href="/register">등록하러 가기</Link>
-            </Button>
+            <Link href="/register" className={cn(buttonVariants({ size: "lg" }), "text-xl h-14 w-full")}>
+              등록하러 가기
+            </Link>
           </CardContent>
         </Card>
 
@@ -33,9 +34,9 @@ export default function Home() {
             <p className="text-lg text-slate-600">
               점수순 자동 매칭 결과를 확인하세요
             </p>
-            <Button asChild size="lg" variant="secondary" className="text-xl h-14 w-full">
-              <Link href="/recommendations">확인하러 가기</Link>
-            </Button>
+            <Link href="/recommendations" className={cn(buttonVariants({ size: "lg", variant: "secondary" }), "text-xl h-14 w-full")}>
+              확인하러 가기
+            </Link>
           </CardContent>
         </Card>
 
@@ -47,9 +48,9 @@ export default function Home() {
             <p className="text-lg text-slate-600">
               매칭 현황을 한눈에 관리하세요
             </p>
-            <Button asChild size="lg" variant="outline" className="text-xl h-14 w-full">
-              <Link href="/admin">대시보드 열기</Link>
-            </Button>
+            <Link href="/admin" className={cn(buttonVariants({ size: "lg", variant: "outline" }), "text-xl h-14 w-full")}>
+              대시보드 열기
+            </Link>
           </CardContent>
         </Card>
       </div>
