@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { AlertTriangle, Clock, CheckCircle } from "lucide-react";
 import { supabase, type Job, type Senior } from "@/lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -128,12 +129,15 @@ export default function AdminPage() {
           {/* 집계 카드 3개 */}
           <div className="grid grid-cols-3 gap-6 mb-10">
             {[
-              { label: "미매칭", count: unmatched, cls: "text-red-600",  desc: "매칭 없거나 0점" },
-              { label: "매칭 대기", count: pending,   cls: "text-green-600", desc: "pending 매칭 보유" },
-              { label: "배정 완료", count: assigned,  cls: "text-blue-600",  desc: "assigned/done 완료" },
+              { label: "미매칭",  count: unmatched, cls: "text-red-600",   desc: "매칭 없거나 0점",      icon: <AlertTriangle className="mx-auto mb-2 text-red-400"   size={36} /> },
+              { label: "매칭 대기", count: pending,   cls: "text-green-600", desc: "pending 매칭 보유",   icon: <Clock          className="mx-auto mb-2 text-green-400" size={36} /> },
+              { label: "배정 완료", count: assigned,  cls: "text-blue-600",  desc: "assigned/done 완료", icon: <CheckCircle    className="mx-auto mb-2 text-blue-400"  size={36} /> },
             ].map(c => (
               <Card key={c.label} className="text-center">
-                <CardHeader className="pb-2"><CardTitle className="text-2xl">{c.label}</CardTitle></CardHeader>
+                <CardHeader className="pb-2">
+                  {c.icon}
+                  <CardTitle className="text-2xl">{c.label}</CardTitle>
+                </CardHeader>
                 <CardContent>
                   <p className={`text-5xl font-bold ${c.cls}`}>{c.count}</p>
                   <p className="mt-2 text-lg text-slate-500">{c.desc}</p>
@@ -172,8 +176,8 @@ export default function AdminPage() {
                           </td>
                           <td className="py-4 pr-4">{statusBadge(s.matchStatus)}</td>
                           <td className="py-4">
-                            <Button asChild variant="outline" size="sm" className="h-10 text-lg px-4">
-                              <Link href={`/recommendations?senior_id=${s.id}`}>상세 보기</Link>
+                            <Button asChild variant="outline" size="sm" className="h-12 text-lg px-4">
+                              <Link href={`/recommendations?senior_id=${s.id}`}>추천 일자리 보기</Link>
                             </Button>
                           </td>
                         </tr>

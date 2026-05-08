@@ -14,9 +14,9 @@ type MatchCard = {
 };
 
 function scoreBadge(score: number) {
-  if (score >= 6) return { label: "최적 6점", className: "bg-yellow-100 text-yellow-800 border border-yellow-300" };
-  if (score >= 4) return { label: `적합 ${score}점`, className: "bg-green-100 text-green-800 border border-green-300" };
-  return { label: `부분 ${score}점`, className: "bg-slate-100 text-slate-600 border border-slate-300" };
+  if (score >= 6) return { label: "매우 적합", className: "bg-yellow-100 text-yellow-800 border border-yellow-300" };
+  if (score >= 4) return { label: "적합", className: "bg-green-100 text-green-800 border border-green-300" };
+  return { label: "보통", className: "bg-slate-100 text-slate-600 border border-slate-300" };
 }
 
 function RecommendationsContent() {
@@ -60,11 +60,11 @@ function RecommendationsContent() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-4xl font-bold text-slate-900 mb-2">추천 매칭 목록</h1>
+      <h1 className="text-4xl font-bold text-slate-900 mb-2">
+        {seniorName ? `${seniorName} 님께 맞는 일자리` : "추천 일자리 목록"}
+      </h1>
       {seniorName && (
-        <p className="text-xl text-slate-500 mb-8">
-          <span className="font-semibold text-slate-800">{seniorName}</span> 님의 매칭 결과 (점수 높은 순)
-        </p>
+        <p className="text-xl text-slate-500 mb-8">점수 높은 순으로 보여드립니다</p>
       )}
 
       {loading && <p className="text-xl text-slate-400 text-center py-16">불러오는 중...</p>}
@@ -72,7 +72,8 @@ function RecommendationsContent() {
       {!loading && matches.length === 0 && (
         <div className="rounded-xl border-2 border-slate-300 bg-slate-50 px-8 py-12 text-center">
           <p className="text-2xl font-bold text-slate-500 mb-3">현재 매칭되는 일자리가 없습니다</p>
-          <p className="text-xl text-slate-400">일자리 정보가 등록되면 자동으로 매칭됩니다</p>
+          <p className="text-xl text-slate-400 mb-2">일자리 정보가 등록되면 자동으로 매칭됩니다</p>
+          <p className="text-xl text-slate-500 font-medium">담당자가 직접 연락드리니 잠시만 기다려 주세요</p>
         </div>
       )}
 

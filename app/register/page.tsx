@@ -60,12 +60,12 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-4xl font-bold text-slate-900 mb-2">시니어 프로필 등록</h1>
+      <h1 className="text-4xl font-bold text-slate-900 mb-2">시니어 일자리 신청하기</h1>
       <p className="text-xl text-slate-500 mb-8">정보를 입력하시면 일자리를 자동으로 추천해 드립니다</p>
 
       {success && (
         <div className="mb-6 rounded-xl border-2 border-green-500 bg-green-50 px-6 py-4">
-          <p className="text-xl font-bold text-green-700">등록이 완료되었습니다 ✓ 매칭 결과를 추천 목록에서 확인하세요.</p>
+          <p className="text-xl font-bold text-green-700">등록이 완료되었습니다. 담당자가 곧 연락드립니다 ✓</p>
         </div>
       )}
 
@@ -76,12 +76,14 @@ export default function RegisterPage() {
 
             <div className="flex flex-col gap-2">
               <label className="text-xl font-medium text-slate-800" htmlFor="name">이름 <span className="text-red-500">*</span></label>
+              <p className="text-lg text-slate-500">성함을 입력해 주세요</p>
               {errors.name && <div className="rounded-lg border border-red-400 bg-red-50 px-4 py-2"><p className="text-lg text-red-600">{errors.name}</p></div>}
               <Input id="name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="홍길동" className="h-14 text-xl px-4" />
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-xl font-medium text-slate-800">거주 지역 <span className="text-red-500">*</span></label>
+              <p className="text-lg text-slate-500">어디에서 일하고 싶으세요?</p>
               {errors.region && <div className="rounded-lg border border-red-400 bg-red-50 px-4 py-2"><p className="text-lg text-red-600">{errors.region}</p></div>}
               <Select value={form.region} onValueChange={v => setForm({ ...form, region: v })}>
                 <SelectTrigger className="h-14 text-xl px-4"><SelectValue placeholder="지역을 선택하세요" /></SelectTrigger>
@@ -91,6 +93,7 @@ export default function RegisterPage() {
 
             <div className="flex flex-col gap-2">
               <label className="text-xl font-medium text-slate-800">희망 직종 <span className="text-red-500">*</span></label>
+              <p className="text-lg text-slate-500">어떤 일을 하시겠어요?</p>
               {errors.desired_job && <div className="rounded-lg border border-red-400 bg-red-50 px-4 py-2"><p className="text-lg text-red-600">{errors.desired_job}</p></div>}
               <Select value={form.desired_job} onValueChange={v => setForm({ ...form, desired_job: v })}>
                 <SelectTrigger className="h-14 text-xl px-4"><SelectValue placeholder="직종을 선택하세요" /></SelectTrigger>
@@ -100,11 +103,12 @@ export default function RegisterPage() {
 
             <div className="flex flex-col gap-2">
               <label className="text-xl font-medium text-slate-800" htmlFor="career_years">경력 (년수)</label>
+              <p className="text-lg text-slate-500">경력이 몇 년이나 되시나요?</p>
               <Input id="career_years" type="number" min={0} value={form.career_years} onChange={e => setForm({ ...form, career_years: e.target.value })} placeholder="예: 5" className="h-14 text-xl px-4" />
             </div>
 
             <Button type="submit" size="lg" className="h-16 text-2xl font-bold mt-2" disabled={loading}>
-              {loading ? "저장 중..." : "프로필 등록하기"}
+              {loading ? "저장 중..." : "등록하기"}
             </Button>
           </form>
         </CardContent>
