@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 
 const REGIONS = ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
-const JOBS    = ["경비", "청소", "조리", "돌봄", "기타"];
+const JOBS    = ["경비", "청소", "조리", "돌봄", "주차관리", "사무보조", "운전", "판매", "농업", "강사", "기타"];
 
 type MatchRow = { senior_id: string; job_id: string; score: number; status: string };
 type SeniorStat = Senior & { bestScore: number; matchStatus: "unmatched" | "pending" | "assigned" };
